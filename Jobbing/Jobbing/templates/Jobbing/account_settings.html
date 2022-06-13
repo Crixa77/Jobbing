@@ -1,0 +1,272 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    {% include "Jobbing/const/head.html" %}
+</head>
+
+<body>
+{% include "Jobbing/const/preloader.html" %}
+{% include "Jobbing/const/header.html" %}
+<!-- Hero Area Start-->
+<div class="slider-area ">
+    <div class="single-slider section-overly slider-height2 d-flex align-items-center"
+         data-background="../../static/assets/img/hero/about.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap text-center">
+                        <h2>Account Settings</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero Area End -->
+<!-- ================ contact section start ================= -->
+<section class="contact-section">
+    <div class="container">
+        <div class="col-12">
+            <h2 class="contact-title">Change account details</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                {% if user.standarduser and not user.companyuser %}
+                <form class="form-contact contact_form" action="{% url 'account_settings' %}" method="post"
+                      novalidate="novalidate">
+                    {% csrf_token %}
+
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input class="form-control valid" placeholder="first name" name="first_name" id="first_name"
+                                   type="text"
+                                   value="{{ user.first_name }}" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input class="form-control valid" name="last_name" placeholder="last name" id="last_name"
+                                   type="text"
+                                   value="{{ user.last_name }}" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input class="form-control valid" name="email" placeholder="email" id="email" type="email"
+                                   value="{{ user.email }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3 ml-3">
+                        <button type="submit" class="button button-contactForm boxed-btn">Save Changes</button>
+                    </div>
+                </form>
+                {% endif %}
+            {% if user.companyuser %}
+                <form class="form-contact contact_form" action="{% url 'company_settings' %}" method="post"
+                      novalidate="novalidate" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="company_name">Company Name</label>
+                                <input class="form-control valid" name="company_name" placeholder="company name"
+                                       id="company_name" type="text"
+                                       value="{{ user.companyuser.company_name }}" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input class="form-control valid" name="email" placeholder="email"
+                                       id="email" type="email"
+                                       value="{{ user.email }}" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="web">Website URL</label>
+                                <input class="form-control valid" name="web" placeholder="website"
+                                       id="web" type="text"
+                                       value="{{ user.companyuser.web }}" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="_us">About Your Company</label>
+                                <textarea class="form-control valid" id="about" type="text" name="about_us"
+                                          placeholder="about" cols="80" rows="5" required>{{ user.companyuser.about_us}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="img">
+                                    Upload image (will be resized to 85x85)
+                                </label>
+                                <br>
+                                <input accept=".image/png, image/jpeg, image/jpg" name="img" id="img"
+                                       type="file"/>
+                            </div>
+                        </div>
+                    {% if user.companyuser.img %}
+                        <div class="col-sm-12">
+                            <img src="../media/{{ user.companyuser.img }}" width="85" height="85" alt="company image preview">
+                        </div>
+                        {% endif %}
+                    <div class="form-group mt-3 ml-3">
+                        <button type="submit" class="button button-contactForm boxed-btn">Save Changes</button>
+                    </div>
+                </form>
+                    {% endif %}
+            </div>
+            <div class="col-lg-3 offset-lg-1">
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-pencil-alt"></i></span>
+                    <div class="media-body">
+                        <h3>{{ user.username }}</h3>
+                    </div>
+                </div>
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-info-alt"></i></span>
+                    <div class="media-body">
+                        {% if user.standarduser and not user.companyuser %}
+                        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                        {% endif %}
+                    {% if user.companyuser %}
+                        <h3>{{ user.companyuser.company_name }}</h3>
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-email"></i></span>
+                    <div class="media-body">
+                        <h3>{{ user.email }}</h3>
+                    </div>
+                </div>
+                {% if user.standarduser.cv and not user.companyuser %}
+                    <div>
+                        <a href="{% url 'get_cv' %}">
+                            <div class="border-btn2 border-btn4">
+                                Download your current CV
+                                <input id="file-upload" hidden="hidden" type="file"/>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if user.standarduser and not user.companyuser %}
+                    <div>
+                        <form action="{% url 'upload_cv' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label for="cv" class="border-btn2 border-btn4">
+                                Upload your CV
+                            </label>
+                            <input accept=".pdf" onchange="this.form.submit();" name="cv" id="cv" hidden="hidden"
+                                   type="file"/>
+                        </form>
+                    </div>
+                    <a href="{% url 'request_company' %}">
+                        <div class="border-btn2 border-btn4 text-warning border-warning">
+                            Request Business Account
+                        </div>
+                    </a>
+                {% elif user.companyuser %}
+                    <a href="{% url 'your_offers' %}">
+                        <div class="border-btn2 border-btn4 text-warning border-warning">
+                            Manage Your Offers
+                        </div>
+                    </a>
+                {% endif %}
+            </div>
+
+
+        </div>
+        <div class="col-lg-8">
+            <form class="form-contact contact_form" action="{% url 'change_password' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-12 mb-1">
+                        <h2 class="contact-title">Change password</h2>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="cpassword">Current Password</label>
+                            <input class="form-control valid" name="cpassword" id="cpassword"
+                                   type="password"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'current password'"
+                                   placeholder="current password" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="new_1">New Password</label>
+                            <input class="form-control valid" name="new_1" id="new_1" type="password"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'new password'"
+                                   placeholder="new password" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="new_2">Repeat New Password</label>
+                            <input class="form-control valid" name="new_2" id="new_2"
+                                   type="password"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'repeat new password'"
+                                   placeholder="repeat password" required>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3 ml-3">
+                        <button type="submit" class="button button-contactForm boxed-btn">Change password</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- ================ contact section end ================= -->
+{% include "Jobbing/const/footer.html" %}
+<!-- JS here -->
+
+<!-- All JS Custom Plugins Link Here here -->
+<script src="../../static/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="../../static/assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="../../static/assets/js/popper.min.js"></script>
+<script src="../../static/assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="../../static/assets/js/jquery.slicknav.min.js"></script>
+
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="../../static/assets/js/owl.carousel.min.js"></script>
+<script src="../../static/assets/js/slick.min.js"></script>
+<script src="../../static/assets/js/price_rangs.js"></script>
+
+<!-- One Page, Animated-HeadLin -->
+<script src="../../static/assets/js/wow.min.js"></script>
+<script src="../../static/assets/js/animated.headline.js"></script>
+
+<!-- Scrollup, nice-select, sticky -->
+<script src="../../static/assets/js/jquery.scrollUp.min.js"></script>
+<script src="../../static/assets/js/jquery.nice-select.min.js"></script>
+<script src="../../static/assets/js/jquery.sticky.js"></script>
+<script src="../../static/assets/js/jquery.magnific-popup.js"></script>
+
+<!-- contact js -->
+<script src="../../static/assets/js/contact.js"></script>
+<script src="../../static/assets/js/jquery.form.js"></script>
+<script src="../../static/assets/js/jquery.validate.min.js"></script>
+<script src="../../static/assets/js/mail-script.js"></script>
+<script src="../../static/assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->
+<script src="../../static/assets/js/plugins.js"></script>
+<script src="../../static/assets/js/main.js"></script>
+
+</body>
+
+</html>

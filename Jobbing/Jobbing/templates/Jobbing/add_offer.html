@@ -1,0 +1,49 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    {% include "Jobbing/const/head.html" %}
+</head>
+
+<body>
+{% include "Jobbing/const/preloader.html" %}
+{% include "Jobbing/const/header.html" %}
+<main>
+
+    <!-- Hero Area Start-->
+    <div class="slider-area ">
+        <div class="single-slider section-overly slider-height2 d-flex align-items-center"
+             data-background="../../static/assets/img/hero/about.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2> Add offer</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Area End -->
+    <!-- Support Company Start-->
+    <div class="support-company-area fix mt-30 mb-30">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-auto offset-xl-3 offset-lg-3">
+                    <div class="right-caption">
+                        <form method="POST" class="post-form">{% csrf_token %}
+                            <h4>Offer will be active up to 14 days after publishing.</h4>
+                            {{ form.as_p}}
+                            <button type="submit" class="save btn btn-default">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Support Company End-->
+</main>
+{% include "Jobbing/const/footer.html" %}
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if category_list %}
+        <ul>
+        {% for category in category_list %}
+            <li><a href="/category/{{ category.id }}/">{{ category.category }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No categories are available.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    {% include "Jobbing/const/head.html" %}
+</head>
+
+<body>
+{% include "Jobbing/const/preloader.html" %}
+{% include "Jobbing/const/header.html" %}
+<main>
+
+    <!-- Hero Area Start-->
+    <div class="slider-area ">
+        <div class="single-slider section-overly slider-height2 d-flex align-items-center"
+             data-background="../../static/assets/img/hero/about.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2>Your offers</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Area End -->
+    <!-- Support Company Start-->
+    <div class="support-company-area auto mt-30 mb-30">
+        <div class="container">
+
+            <a href="{% url 'add_offer' %}">
+                <div class="btn head-btn2">
+                    Add new offer
+                    <input id="file-upload" hidden="hidden" type="file"/>
+                </div>
+            </a>
+            {% if disabled_offers %}
+                <div class="row align-items-center">
+                    <div class="center">
+                        <div class="mt-30 col-12">
+                            <h2 class="contact-title">Your disabled offers:</h2>
+                        </div>
+                        {% for offer in disabled_offers %}
+                            <div class="single-job-items mb-30 col-12">
+                                <div class="job-items">
+                                    <div class="company-img">
+                                        <a href={% url 'job_details' id=offer.id %}><img
+                                                src="media/{{ offer.company.img }}"
+                                                alt=""></a>
+                                    </div>
+                                    <div class="job-tittle">
+                                        <a href={% url 'job_details' id=offer.id %}><h4>{{ offer.header }}</h4></a>
+                                        <ul>
+                                            <li><i class="fas fa-map-marker-alt"></i>{{ offer.city }}</li>
+                                            <li>${{ offer.salary_from }} - ${{ offer.salary_upto }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="items-link ml-2 f-right">
+                                    <a href={% url 'delete_offer' offer.id %}>Delete</a>
+                                </div>
+                                <div class="items-link f-right">
+                                    <a href={% url 'activate_offer' offer.id %}>Activate</a>
+                                </div>
+                                <div class="items-link f-right">
+                                    <a href={% url 'edit_offer' offer.id %}>Edit</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            {% if offer_list %}
+                <div class="row align-items-center">
+                    <div class="center">
+                        <div class="mt-30 col-12">
+                            <h2 class="contact-title">Your offers:</h2>
+                        </div>
+                        {% for offer in offer_list %}
+                            <div class="single-job-items mb-30">
+                                <div class="job-items">
+                                    <div class="company-img">
+                                        <a href={% url 'job_details' id=offer.id %}><img
+                                                src="media/{{ offer.company.img }}"
+                                                alt=""></a>
+                                    </div>
+                                    <div class="job-tittle">
+                                        <a href={% url 'job_details' id=offer.id %}><h4>{{ offer.header }}</h4></a>
+                                        <ul>
+                                            <li><i class="fas fa-map-marker-alt"></i>{{ offer.city }}</li>
+                                            <li>${{ offer.salary_from }} - ${{ offer.salary_upto }}</li>
+                                            <li>Expires: {{ offer.ended_at }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="items-link ml-2 f-right">
+                                    <a href={% url 'delete_offer' offer.id %}>Delete</a>
+                                </div>
+                                <div class="items-link f-right">
+                                    <a href={% url 'deactivate_offer' offer.id %}>Deactivate</a>
+                                </div>
+                                <div class="items-link f-right">
+                                    <a href={% url 'edit_offer' offer.id %}>Edit</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Support Company End-->
+</main>
+{% include "Jobbing/const/footer.html" %}
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    {% include "Jobbing/const/head.html" %}
+</head>
+
+<body>
+{% include "Jobbing/const/preloader.html" %}
+{% include "Jobbing/const/header.html" %}
+<main>
+    <!-- slider Area Start-->
+    <div class="slider-area ">
+        <!-- Mobile Menu -->
+        <div class="slider-active">
+            <div class="single-slider slider-height d-flex align-items-center"
+                 data-background="../../static/assets/img/hero/h1_hero.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-9 col-md-10">
+                            <div class="hero__caption">
+                                <h1>Find the most exciting startup jobs</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Search Box -->
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <!-- form -->
+                            <form id="searchJobs" method="post" class="search-box" action={% url 'search' %}>
+                            {% csrf_token %}
+                                <div class="input-form">
+                                    <input name="job" type="text" placeholder="Job Tittle or keyword">
+                                </div>
+                                <div class="select-form">
+                                    <div class="select-itms">
+                                        <select name="location" id="location">
+                                            <option value="">All</option>
+                                            {% for city in city_list %}
+                                            <option value={{ city.city }}>{{ city.city }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="search-form">
+                                    <a type="submit" onclick="document.getElementById('searchJobs').submit()" href="#">Find job</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+    <!-- Our Services Start -->
+    <div class="our-services section-pad-t30">
+        <div class="container">
+            <!-- Section Tittle -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-tittle text-center">
+                        <span>FEATURED TOURS Packages</span>
+                        <h2>Browse Top Categories </h2>
+                    </div>
+                </div>
+            </div>
+            {% if category_list %}
+            <div class="row d-flex justify-content-center">
+                {% for category in category_list %}
+                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                    <div class="single-services text-center mb-30">
+                        <div class="services-ion">
+                            <span class={{ category.ico }}></span>
+                        </div>
+                        <div class="services-cap">
+                            <h5><a href="{% url 'search' %}?cat={{ category.id }}">{{ category.category }}</a></h5>
+                            <span>{{ category.offer_count }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <!-- More Btn -->
+            <!-- Section Button -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="browse-btn2 text-center mt-50">
+                        <a href="{% url 'search' %}" class="border-btn2">Browse All Sectors</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Our Services End -->
+{% include "Jobbing/const/cv.html" %}
+    <!-- Featured_job_start -->
+    <section class="featured-job-area feature-padding">
+        <div class="container">
+            <!-- Section Tittle -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-tittle text-center">
+                        <span>Recent Job</span>
+                        <h2>Featured Jobs</h2>
+                    </div>
+                </div>
+            </div>
+            {% if offer_list %}
+            <div class="row justify-content-center">
+                <div class="col-xl-10">
+                    <!-- single-job-content -->
+                    {% for offer in offer_list %}
+                    <div class="single-job-items mb-30">
+                        <div class="job-items">
+                            <div class="company-img">
+                                <a href={% url 'job_details' id=offer.id %}><img src="media/{{ offer.company.img}}" alt=""></a>
+                            </div>
+                            <div class="job-tittle">
+                                <a href={% url 'job_details' id=offer.id %}><h4>{{ offer.header}}</h4></a>
+                                <ul>
+{#                                    <li>Creative Agency</li>#}
+                                    <li><i class="fas fa-map-marker-alt"></i>{{ offer.city }}</li>
+                                    <li>${{ offer.salary_from }} - ${{ offer.salary_upto }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="items-link f-right">
+                            <a href={% url 'job_details' id=offer.id %}>{{ offer.working_time }}</a>
+                            <span>Last updated: {{ offer.updated_at }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <!-- Featured_job_end -->
+</main>
+{% include "Jobbing/const/footer.html" %}
+
+</body>
+</html>

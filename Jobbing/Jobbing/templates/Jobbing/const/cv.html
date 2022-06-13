@@ -1,0 +1,32 @@
+<!-- Online CV Area Start -->
+<style>
+    input[type="file"] {
+        display: none;
+    }
+</style>
+<div class="online-cv cv-bg section-overly pt-90 pb-120" data-background="../../static/assets/img/gallery/cv_bg.jpg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="cv-caption text-center">
+                    <p class="pera1">FEATURED TOURS Packages</p>
+                    <p class="pera2"> Make a Difference with Your Online Resume!</p>
+                    {% if user.is_authenticated and user.standarduser and not user.companyuser %}
+                        <form action="{% url 'upload_cv' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                            <label for="cv" class="border-btn2 border-btn4">
+                                Upload your cv
+                            </label>
+                        <input id="cv" name="cv" type="file" accept=".pdf" onchange="this.form.submit();" />
+                        </form>
+                    {% else %}
+                        <label for="file-upload" onclick="document.getElementById('id04').style.display='block'" class="border-btn2 border-btn4">
+                        Create your account
+                    </label>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Online CV Area End-->

@@ -1,0 +1,244 @@
+<header>
+    <style>
+        /* Full-width input fields */
+        .full-width-input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+            border: 1px solid #888;
+            width: max-content; /* Could be more or less, depending on screen size */
+        }
+
+        /* Add Zoom Animation */
+        .animate {
+            -webkit-animation: animatezoom 0.6s;
+            animation: animatezoom 0.6s
+        }
+
+        @-webkit-keyframes animatezoom {
+            from {
+                -webkit-transform: scale(0)
+            }
+            to {
+                -webkit-transform: scale(1)
+            }
+        }
+
+        @keyframes animatezoom {
+            from {
+                transform: scale(0)
+            }
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .button-text-color {
+            color: #28395a;
+        }
+
+        .button-text-color:hover,
+        .button-text-color:focus {
+            color: white;
+        }
+
+
+    </style>
+{% if messages %}
+    <div class="modal" id="id22" style="display: block">
+        <div class="modal-content animate">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-xl">
+                        {% for message in messages %}
+                        {% if message.tags == 'warning' %}
+                            <p class="text-danger">{{ message }}</p>
+                            {% else %}
+                            <p class="text-dark">{{ message }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-auto">
+                        <button class="btn btn-sm" onclick="document.getElementById('id22').style.display='none'">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id22');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <!-- Header Start -->
+    <div class="header-area header-transparrent">
+        <div class="hedader-top header-sticky">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-2">
+                        <!-- Logo -->
+                        <div class="logo center">
+                            <a href={% url 'index' %}>
+                                {#                                <img src="../../../static/assets/img/logo/logo.png" alt="">#}
+                                <h1 class="font-weight-light">{{ appConf.app_title | safe }}</h1>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-9">
+                        <div class="menu-wrapper">
+                            <!-- Main-menu -->
+                            <div class="main-menu">
+                                <nav class="d-none d-lg-block">
+                                    <ul id="navigation">
+                                        <li><a href={% url 'index' %}>Home</a></li>
+                                        <li><a href="{% url 'search' %}">Find a Jobs </a></li>
+                                        <li><a href="{% url 'about' %}">About</a></li>
+                                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                                        {% if user.is_authenticated %}
+                                            <li><a href="{% url 'account_settings' %}">Account Settings</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                            <!-- Header-btn -->
+                            <div class="header-btn d-none f-right d-lg-block">
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'logout' %}" class="btn head-btn1">Logout</a>
+                                {% else %}
+                                    <!-- Register Start -->
+                                    <button class="btn head-btn1"
+                                            onclick="document.getElementById('id04').style.display='block'">
+                                        Register
+                                    </button>
+
+                                    <div id="id04" class="modal">
+
+                                        <form id="registerUser" method="post" class="modal-content animate"
+                                        action="{% url 'register' %}">
+                                            {% csrf_token %}
+                                            <div class="container">
+                                                <label for="username"><b>Username</b></label>
+                                                <input type="text" class="full-width-input" placeholder="Enter Username"
+                                                       name="username" required>
+
+                                                <label for="mail"><b>E-mail</b></label>
+                                                <input type="email" class="full-width-input" placeholder="Enter E-mail"
+                                                       name="mail" required>
+                                                <label for="first_name"><b>First Name</b></label>
+                                                <input type="text" class="full-width-input" placeholder="Enter First Name"
+                                                       name="first_name" required>
+                                                <label for="last_name"><b>Last Name</b></label>
+                                                <input type="text" class="full-width-input" placeholder="Enter Last Name"
+                                                       name="last_name" required>
+
+                                                <label for="pwd1"><b>Password</b></label>
+                                                <input type="password" class="full-width-input"
+                                                       placeholder="Enter Password"
+                                                       name="pwd1" required>
+
+                                                <label for="pwd2"><b>Repeat Password</b></label>
+                                                <input type="password" class="full-width-input"
+                                                       placeholder="Repeat Password"
+                                                       name="pwd2" required>
+
+                                                <button class="btn head-btn2" type="submit">Register</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- Register END -->
+                                    <!-- Login Start -->
+                                    <button class="btn head-btn2 bg-white"
+                                            onclick="document.getElementById('id01').style.display='block'">
+                                        Login
+                                    </button>
+
+                                    <div id="id01" class="modal">
+
+                                        <form id="loginUser" method="post" class="modal-content animate"
+                                              action="{% url 'login' %}">
+                                            {% csrf_token %}
+                                            <div class="container">
+                                                <label for="username"><b>Username</b></label>
+                                                <input type="text" class="full-width-input"
+                                                       placeholder="Enter Username"
+                                                       name="username" required>
+
+                                                <label for="pwd"><b>Password</b></label>
+                                                <input type="password" class="full-width-input"
+                                                       placeholder="Enter Password"
+                                                       name="pwd" required>
+
+                                                <button class="btn head-btn2" type="submit">Login</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <script>
+                                        // Get the modal
+                                        var modal = document.getElementById('id01');
+                                        var modalR = document.getElementById('id04');
+
+                                        // When the user clicks anywhere outside of the modal, close it
+                                        window.onclick = function (event) {
+                                            if (event.target == modal) {
+                                                modal.style.display = "none";
+                                            }
+                                            if (event.target == modalR) {
+                                                modalR.style.display = "none";
+                                            }
+                                        }
+                                    </script>
+                                    <!-- Login END -->
+                                {% endif %}
+                                {% if user.is_superuser %}
+                                    <a class="btn head-btn1" href="/admin">Admin</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+</header>
